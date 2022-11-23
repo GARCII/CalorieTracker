@@ -5,6 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.plcoding.core.domain.DefaultPreferences
 import com.plcoding.core.domain.preferences.Preferences
+import com.plcoding.core.domain.use_case.FilterOutDigits
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,11 +20,17 @@ object AppModule {
     @Singleton
     fun provideSharedPreferences(
         app: Application
-    ) = app.getSharedPreferences("shared_pref", MODE_PRIVATE)
+    ): SharedPreferences = app.getSharedPreferences("shared_pref", MODE_PRIVATE)
 
     @Provides
     @Singleton
     fun providePreferences(
         sharedPreferences: SharedPreferences
     ): Preferences = DefaultPreferences(sharedPreferences)
+
+    @Provides
+    @Singleton
+    fun provideFilterOutDigitsUseCase(): FilterOutDigits {
+        return FilterOutDigits()
+    }
 }
