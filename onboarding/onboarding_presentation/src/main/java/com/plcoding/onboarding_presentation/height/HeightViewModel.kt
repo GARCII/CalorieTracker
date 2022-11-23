@@ -19,8 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HeightViewModel @Inject constructor(
-     val preferences: Preferences,
-     val filterOutDigits: FilterOutDigits
+     private val preferences: Preferences,
+     private val filterOutDigits: FilterOutDigits
 ): ViewModel() {
 
     var height by mutableStateOf("180")
