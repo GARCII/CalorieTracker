@@ -9,7 +9,7 @@ import com.plcoding.core.domain.preferences.Preferences
 
 class DefaultPreferences(
     private val sharedPref: SharedPreferences
-): Preferences {
+) : Preferences {
     override fun saveGender(gender: Gender) {
         sharedPref.edit()
             .putString(Preferences.KEY_GENDER, gender.name)
@@ -62,6 +62,16 @@ class DefaultPreferences(
         sharedPref.edit()
             .putFloat(Preferences.KEY_FAT_RATIO, ratio)
             .apply()
+    }
+
+    override fun saveShouldShowOnBoarding(shouldShow: Boolean) {
+        sharedPref.edit()
+            .putBoolean(Preferences.KEY_SHOULD_SHOW_ON_BOARDING, shouldShow)
+            .apply()
+    }
+
+    override fun loadShouldShowOnBoarding(): Boolean {
+       return sharedPref.getBoolean(Preferences.KEY_SHOULD_SHOW_ON_BOARDING, false)
     }
 
     override fun loadUserInfo(): UserInfo {

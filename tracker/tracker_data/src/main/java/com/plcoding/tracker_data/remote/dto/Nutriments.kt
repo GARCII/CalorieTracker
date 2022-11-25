@@ -1,4 +1,4 @@
-package com.plcoding.tracker_data.dto
+package com.plcoding.tracker_data.remote.dto
 
 import com.squareup.moshi.Json
 
