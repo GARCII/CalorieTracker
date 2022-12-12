@@ -11,6 +11,7 @@ import com.plcoding.core.util.UiEvent
 import com.plcoding.tracker_domain.use_case.TrackerUseCases
 import com.plcoding.tracker_presentation.tracker_overview.TrackerOverviewEvent
 import com.plcoding.tracker_presentation.tracker_overview.TrackerOverviewState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class TrackerOverviewViewModel @Inject constructor(
     private val preferences: Preferences,
     private val trackerUseCases: TrackerUseCases
@@ -32,6 +34,7 @@ class TrackerOverviewViewModel @Inject constructor(
     var getFoodsForDateJob: Job? = null
 
     init {
+
         preferences.saveShouldShowOnBoarding(false)
     }
 
