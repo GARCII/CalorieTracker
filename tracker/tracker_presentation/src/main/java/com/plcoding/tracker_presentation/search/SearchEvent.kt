@@ -16,7 +16,7 @@ sealed class SearchEvent {
     data class OnTrackFoodClick(
         val food: TrackableFood,
         val mealType: MealType,
-        val data: LocalDate
+        val date: LocalDate
     ): SearchEvent()
 
     data class OnSearchFocusChange(
