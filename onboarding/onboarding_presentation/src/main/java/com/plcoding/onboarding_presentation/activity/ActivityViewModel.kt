@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ActivityViewModel @Inject constructor(
     private val preferences: Preferences
-): ViewModel() {
+) : ViewModel() {
 
     var selectedActivityLevel by mutableStateOf<ActivityLevel>(ActivityLevel.Low)
         private set
@@ -34,7 +34,7 @@ class ActivityViewModel @Inject constructor(
     fun onNextClick() {
         viewModelScope.launch {
             preferences.saveActivityLevel(selectedActivityLevel)
-            _uiEvent.send(UiEvent.Navigate(Route.GOAL))
+            _uiEvent.send(UiEvent.Success)
         }
     }
 }

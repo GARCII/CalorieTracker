@@ -71,7 +71,7 @@ class DefaultPreferences(
     }
 
     override fun loadShouldShowOnBoarding(): Boolean {
-       return sharedPref.getBoolean(Preferences.KEY_SHOULD_SHOW_ON_BOARDING, false)
+       return sharedPref.getBoolean(Preferences.KEY_SHOULD_SHOW_ON_BOARDING, true)
     }
 
     override fun loadUserInfo(): UserInfo {

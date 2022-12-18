@@ -34,42 +34,29 @@ class TrackerOverviewViewModel @Inject constructor(
     var getFoodsForDateJob: Job? = null
 
     init {
-
+        refreshFoods()
         preferences.saveShouldShowOnBoarding(false)
     }
 
     fun onEvent(event: TrackerOverviewEvent) {
         when (event) {
-            is TrackerOverviewEvent.OnAddFoodClick -> {
-                viewModelScope.launch {
-                    _uiEvent.send(
-                        UiEvent.Navigate(
-                            route = Route.SEARCH
-                                    + "/${event.meal.mealType.name}"
-                                    + "/${state.date.dayOfMonth}"
-                                    + "/${state.date.monthValue}"
-                                    + "/${state.date.dayOfYear}"
-                        )
-                    )
-                }
-            }
             is TrackerOverviewEvent.OnDeleteTrackedFoodClick -> {
                 viewModelScope.launch {
                     trackerUseCases.deleteTrackedFood(event.trackedFood)
-                    refreshFood()
+                    refreshFoods()
                 }
             }
             TrackerOverviewEvent.OnNextDayClick -> {
                 state = state.copy(
                     date = state.date.plusDays(1)
                 )
-                refreshFood()
+                refreshFoods()
             }
             TrackerOverviewEvent.OnPreviousDayClicked -> {
                 state = state.copy(
                     date = state.date.minusDays(1)
                 )
-                refreshFood()
+                refreshFoods()
             }
             is TrackerOverviewEvent.OnToggleMealClick -> {
                 state = state.copy(
@@ -83,35 +70,40 @@ class TrackerOverviewViewModel @Inject constructor(
         }
     }
 
-    private fun refreshFood() {
+    private fun refreshFoods() {
         getFoodsForDateJob?.cancel()
-        getFoodsForDateJob = trackerUseCases.getFoodsForDate(state.date)
+        getFoodsForDateJob = trackerUseCases
+            .getFoodsForDate(state.date)
             .onEach { foods ->
                 val nutrientsResult = trackerUseCases.calculateMealNutrients(foods)
                 state = state.copy(
                     totalCarbs = nutrientsResult.totalCarbs,
-                    totalFat = nutrientsResult.totalFat,
                     totalProtein = nutrientsResult.totalProtein,
+                    totalFat = nutrientsResult.totalFat,
                     totalCalories = nutrientsResult.totalCalories,
                     carbsGoal = nutrientsResult.carbsGoal,
                     proteinGoal = nutrientsResult.proteinGoal,
                     fatGoal = nutrientsResult.fatGoal,
                     caloriesGoal = nutrientsResult.caloriesGoal,
+                    trackedFoods = foods,
                     meals = state.meals.map {
-                        val nutrientsForMeal = nutrientsResult.mealNutrients[it.mealType]
-                            ?: return@map it.copy(
-                                carbs = 0,
-                                protein = 0,
-                                fat = 0,
-                                calories = 0
-                            )
+                        val nutrientsForMeal =
+                            nutrientsResult.mealNutrients[it.mealType]
+                                ?: return@map it.copy(
+                                    carbs = 0,
+                                    protein = 0,
+                                    fat = 0,
+                                    calories = 0
+                                )
                         it.copy(
                             carbs = nutrientsForMeal.carbs,
-                            protein = nutrientsForMeal.carbs,
-                            fat = nutrientsForMeal.fat
+                            protein = nutrientsForMeal.protein,
+                            fat = nutrientsForMeal.fat,
+                            calories = nutrientsForMeal.calories
                         )
                     }
                 )
-            }.launchIn(viewModelScope)
+            }
+            .launchIn(viewModelScope)
     }
 }
