@@ -1,6 +1,7 @@
 package com.plcoding.tracker_data.local
 
 import androidx.room.*
+import com.plcoding.tracker_data.local.entity.TrackedFoodEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

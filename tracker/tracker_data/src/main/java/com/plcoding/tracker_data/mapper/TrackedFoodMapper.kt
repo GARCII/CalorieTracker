@@ -1,6 +1,6 @@
 package com.plcoding.tracker_data.mapper
 
-import com.plcoding.tracker_data.local.TrackedFoodEntity
+import com.plcoding.tracker_data.local.entity.TrackedFoodEntity
 import com.plcoding.tracker_domain.model.MealType
 import com.plcoding.tracker_domain.model.TrackedFood
 import java.time.LocalDate

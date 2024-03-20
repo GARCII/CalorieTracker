@@ -1,6 +1,5 @@
 package com.plcoding.tracker_data.remote.dto
 
-import com.plcoding.tracker_data.remote.dto.Nutriments
 import com.squareup.moshi.Json
 
 data class Product(
